@@ -56,6 +56,10 @@
               label="Content"
               rows="5"
             />
+            <v-textarea
+              v-model="editedPost.status"
+              label="Status"
+            />
             <v-text-field
               v-model.number="editedPost.priority"
               label="Priority"
@@ -82,6 +86,7 @@ const headers = [
   { text: 'ID', value: 'id' },
   { text: 'Title', value: 'title' },
   { text: 'Content', value: 'content' },
+  { text: 'Status', value: 'status' },
   { text: 'Priority', value: 'priority' },
   { text: 'Actions', value: 'actions', sortable: false }
 ]
@@ -95,19 +100,21 @@ const fetchPosts = async () => {
       id: post.id,
       title: post.title?.rendered ?? post.title,
       content: post.content?.rendered ?? post.content,
+      status: post.status ?? '',
       priority: post.priority ?? 0,
     }))
   } catch (error) {
     console.error('Failed to fetch posts:', error)
   }
 }
-
 const editedPost = ref({
   id: null,
   title: '',
   content: '',
+  status: '',
   priority: 0,
 })
+
 const editDialog = ref(false)
 
 const editPost = (item) => {
@@ -115,6 +122,7 @@ const editPost = (item) => {
     id: item.id,
     title: item.title?.rendered ?? item.title,
     content: item.content?.rendered ?? item.content,
+    status: item.status ?? '',
     priority: item.priority,
   }
   editDialog.value = true
